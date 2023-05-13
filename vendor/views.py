@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from accounts.forms import UserProfileForm
 from accounts.models import UserProfile
 from accounts.views import check_role_vendor
+from menu.forms import CategoryForm
 from menu.models import Category, FoodItem
 
 from vendor.forms import VendorForm
@@ -10,7 +11,9 @@ from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 
-# Create your views here.
+def get_vendor(request):
+    vendor = Vendor.objects.get(user=request.user)
+    return vendor
 
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)
@@ -46,9 +49,10 @@ def vprofile(request):
 
     return render(request, 'vendor/vprofile.html', context)
 
-
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
 def menu_builder(request):
-    vendor = Vendor.objects.get(user=request.user)  #this way we will get the logged in user
+    vendor = get_vendor(request)  #this way we will get the logged in user
     categories = Category.objects.filter(vendor=vendor)
     context = {
         'categories':categories,
@@ -56,8 +60,10 @@ def menu_builder(request):
     return render(request, 'vendor/menu_builder.html',context)
 
 
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
 def fooditems_by_category(request,pk=None):
-    vendor = Vendor.objects.get(user=request.user)
+    vendor = get_vendor(request)
     category = get_object_or_404(Category, pk=pk)
     fooditems = FoodItem.objects.filter(vendor=vendor, category=category)
     context = {
@@ -65,3 +71,11 @@ def fooditems_by_category(request,pk=None):
         'category':category
     }
     return render(request, 'vendor/fooditems_by_category.html',context)
+
+
+def add_category(request):
+    form = CategoryForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'vendor/add_category.html', context)     
