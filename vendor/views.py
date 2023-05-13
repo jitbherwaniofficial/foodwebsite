@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from accounts.forms import UserProfileForm
 from accounts.models import UserProfile
 from accounts.views import check_role_vendor
+from menu.models import Category, FoodItem
 
 from vendor.forms import VendorForm
 from vendor.models import Vendor
@@ -44,3 +45,23 @@ def vprofile(request):
     }
 
     return render(request, 'vendor/vprofile.html', context)
+
+
+def menu_builder(request):
+    vendor = Vendor.objects.get(user=request.user)  #this way we will get the logged in user
+    categories = Category.objects.filter(vendor=vendor)
+    context = {
+        'categories':categories,
+    }
+    return render(request, 'vendor/menu_builder.html',context)
+
+
+def fooditems_by_category(request,pk=None):
+    vendor = Vendor.objects.get(user=request.user)
+    category = get_object_or_404(Category, pk=pk)
+    fooditems = FoodItem.objects.filter(vendor=vendor, category=category)
+    context = {
+        'fooditems':fooditems,
+        'category':category
+    }
+    return render(request, 'vendor/fooditems_by_category.html',context)
