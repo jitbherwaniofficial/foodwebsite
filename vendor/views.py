@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from accounts.forms import UserProfileForm
 from accounts.models import UserProfile
 from accounts.views import check_role_vendor
-from menu.forms import CategoryForm
+from menu.forms import CategoryForm, FoodItemForm
 from menu.models import Category, FoodItem
 
 from vendor.forms import VendorForm
@@ -85,7 +85,7 @@ def add_category(request):
             category.vendor = get_vendor(request)
             
             category.save() # here the category id will be generated
-            category.slug = slugify(category_name)+'-'+str(category.id) # chicken-15
+            category.slug = slugify(category_name)
             category.save()
             messages.success(request, 'Category added successfully!')
             return redirect('menu_builder')
@@ -111,7 +111,7 @@ def edit_category(request, pk=None):
             category.vendor = get_vendor(request)
             
             category.save() # here the category id will be generated
-            category.slug = slugify(category_name)+'-'+str(category.id) # chicken-15
+            category.slug = slugify(category_name)
             category.save()
             messages.success(request, 'Category Updated successfully!')
             return redirect('menu_builder')
@@ -134,3 +134,26 @@ def delete_category(request, pk=None):
     messages.success(request, 'Category has been deleted successfully!')
     return redirect('menu_builder')
 
+
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
+def add_food(request):
+    if request.method == 'POST':
+        form = FoodItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            foodtitle = form.cleaned_data['food_title']
+            food = form.save(commit=False)
+            food.vendor = get_vendor(request)
+            food.save() # here the category id will be generated
+            food.slug = slugify(foodtitle)
+            food.save()
+            messages.success(request, 'Food Item added successfully!')
+            return redirect('fooditems_by_category', food.category.id)
+        else:
+            print(form.errors)
+    else:        
+        form = FoodItemForm()
+    context = {
+        'form':form
+    }
+    return render(request, 'vendor/add_food.html',context) 
