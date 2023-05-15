@@ -36,7 +36,7 @@
                                         <a href=""><p class="mb-0 font-weight-bold">{{food}}</p></a>
                                         <small class="text-muted">{{food.description}}</small>
                                     </td>
-                                    <td><i class="fa-solid fa-pencil text-info"></i> &nbsp;|&nbsp; <i class="fa-solid fa-trash text-danger"></i></td>
+                                    <td><a href="{% url 'edit_food' food.id %}"><i class="fa-solid fa-pencil text-info"></i></a> &nbsp;|&nbsp; <i class="fa-solid fa-trash text-danger"></i></td>
                                   </tr>
                                   {% endfor %}
                                 </tbody>
