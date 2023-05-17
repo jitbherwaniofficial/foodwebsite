@@ -13,3 +13,7 @@ def marketplace(request):
         'vendor_count':vendor_count,
     }
     return render(request, 'marketplace/listings.html',context)
+
+
+def vendor_detail(request):
+    return render(request, 'marketplace/vendor_detail.html')
