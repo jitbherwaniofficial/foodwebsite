@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from menu.models import Category, FoodItem
 
@@ -30,3 +31,20 @@ def vendor_detail(request,vendor_slug):
         'categories':categories
     }
     return render(request, 'marketplace/vendor_detail.html', context)
+
+
+def add_to_cart(request, food_id):
+    if request.user.is_authenticated:
+        if request.is_ajax():
+            #Check if the food item exists
+            try:
+                fooditem = FoodItem.objects.get(id=food_id)
+                # check if the user has already added that food to the cart
+            except:
+                return JsonResponse({'status': 'Failed', 'message': 'This Food Does Not Exist!'})    
+        else:
+            return JsonResponse({'status': 'Failed', 'message': 'Invalid request!'})
+    else:    
+        return JsonResponse({'status': 'Failed', 'message': 'Please login to continue.'})
+
+
