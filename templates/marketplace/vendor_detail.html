@@ -16,15 +16,15 @@
                         <div class="company-info">
                             <div class="img-holder">
                                 <figure>
-                                    <img src="assets/extra-images/listing-logo18.png" alt="">
+                                    {% if vendor.user_profile.profile_picture %}
+                                    <img src="{{ vendor.user_profile.profile_picture.url }}" alt="">
+                                    {% else %}
+                                    <img src="{% static 'extra-images/blog-image.jpg' %}" alt="Profile_picture">
+                                    {% endif %}
                                 </figure>
                             </div>
                             <div class="text-holder">
-                                <span class="restaurant-title">Restaurant Demo</span>
-                                <div class="text">
-                                    <i class="icon-local_pizza"></i>
-                                    <p>Apple Juice</p>
-                                </div>
+                                <span class="restaurant-title">{{vendor.vendor_name}}</span>
                             </div>
                         </div>
                         <div class="delivery-timing reviews-sortby">
