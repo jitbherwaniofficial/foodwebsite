@@ -31,6 +31,10 @@
                     </div>
                     <div class="col-lg-6 col-md-4 col-sm-12 col-xs-12">
                         <div class="login-option">
+                            <a href="" class="mr-4">
+                                <i class="fa fa-shopping-cart text-danger" style="font-size: 20px;"></i>
+                                <span class="badge badge-warning" id="cart-counter" style="position: relative;border-radius: 50px;bottom: 10px;left: -5px;color: crimson;">{{ cart_count }}</span>
+                            </a>
                             <a href="{% url 'marketplace' %}" class="btn btn-outline-danger text-uppercase font-weight-bold">Marketplace</a>
                             {% if user.is_authenticated %}
                             <a class="cs-color cs-popup-joinus-btn login-popup" data-target="#sign-in"
