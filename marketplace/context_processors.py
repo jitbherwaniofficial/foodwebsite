@@ -26,7 +26,5 @@ def  get_cart_amounts(request):
         for item in cart_items:
             fooditem = FoodItem.objects.get(pk=item.fooditem.id)
             subtotal += (fooditem.price * item.quantity)
-        print(subtotal)
-        grand_total = subtotal + tax    
-        print(grand_total)
+        grand_total = subtotal + tax
     return dict(subtotal=subtotal, tax=tax, grand_total=grand_total)    
