@@ -9,3 +9,5 @@ def home(request):
         'vendors': vendors,
     }
     return render(request, "home.html", context)
+
+
