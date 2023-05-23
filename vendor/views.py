@@ -85,7 +85,7 @@ def add_category(request):
             category.vendor = get_vendor(request)
             
             category.save() # here the category id will be generated
-            category.slug = slugify(category_name)
+            category.slug = slugify(category_name) + '-' + str(category.id)
             category.save()
             messages.success(request, 'Category added successfully!')
             return redirect('menu_builder')
