@@ -38,6 +38,7 @@
              <br><br>
 
              <form action="" id="opening_hours">
+              {% csrf_token %}
                 <div class="row">
                     <div class="col-md-2">{{ form.day }}</div>
                     <div class="col-md-2">{{ form.from_hour }}</div>
@@ -46,7 +47,7 @@
                         {{ form.is_closed }} set as Closed
                     </div>
                     <div class="col-md-2">
-                        <button class="btn btn-success">Add Hours</button>
+                        <button class="btn btn-success add_hour">Add Hours</button>
                     </div>
                 </div>
              </form>
