@@ -212,5 +212,6 @@ def opening_hours(request):
     return render(request, 'vendor/opening_hours.html',context)
 
 
-def add_apening_hours(request):
+def add_opening_hours(request):
+    # HANDLE THE DATA AND SAVE THEM INSIDE THE DATABASE
     return HttpResponse("Add Opening Hours")
