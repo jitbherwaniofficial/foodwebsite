@@ -735,7 +735,6 @@ $(document).ready(function(){
         var to_hour = document.getElementById('id_to_hour').value
         var is_closed = document.getElementById('id_is_closed').checked
         var csrf_token = $('input[name=csrfmiddlewaretoken]').val()
-        console.log(day, from_hour, to_hour, is_closed, csrf_token);
     })
     // document ready close
 

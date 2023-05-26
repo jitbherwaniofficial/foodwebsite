@@ -18,6 +18,11 @@ table > tbody > tr > td{
     border: none !important;
 }
 
+#opening_hours select{
+
+    padding: 5px 10px !important;
+}
+
 /* .btn .btn-info{
     padding: 2px 1.75em;
     font-size: 12px;
