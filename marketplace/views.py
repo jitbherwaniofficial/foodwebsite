@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from marketplace.context_processors import get_cart_amounts, get_cart_counter
@@ -41,7 +41,17 @@ def vendor_detail(request,vendor_slug):
     # CHECK CURRENT DAY'S OPENING HOURS
     today = date.today().isoweekday()
     current_opening_hours = OpeningHour.objects.filter(vendor=vendor, day=today)
-    print(current_opening_hours)
+    now = datetime.now().strftime("%H:%M:%S")
+    is_open = None
+    for i in current_opening_hours:
+        start = str(datetime.strptime(i.from_hour, "%I:%M %p").time())
+        end = str(datetime.strptime(i.to_hour, "%I:%M %p").time())
+        if now > start and now < end:
+            is_open = True
+            break
+        else:
+            is_open = False    
+
 
     if request.user.is_authenticated:
         cart_items = Cart.objects.filter(user=request.user)
@@ -52,7 +62,8 @@ def vendor_detail(request,vendor_slug):
         'categories':categories,
         'cart_items':cart_items,
         'opening_hours':opening_hours,
-        'current_opening_hours':current_opening_hours
+        'current_opening_hours':current_opening_hours,
+        'is_open':is_open
     }
     return render(request, 'marketplace/vendor_detail.html', context)
 
