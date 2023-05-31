@@ -41,7 +41,7 @@ def vendor_detail(request,vendor_slug):
     # CHECK CURRENT DAY'S OPENING HOURS
     today = date.today().isoweekday()
     current_opening_hours = OpeningHour.objects.filter(vendor=vendor, day=today)
-        
+
     if request.user.is_authenticated:
         cart_items = Cart.objects.filter(user=request.user)
     else:
