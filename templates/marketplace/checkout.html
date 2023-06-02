@@ -17,6 +17,45 @@
                                 <div class="menu-itam-holder">
                                    
                                     <div id="menu-item-list-6272" class="menu-itam-list">
+                                       <form action="#" method="POST">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            <div class="form-group col-md-6 col-sm-12 col-lg-6">
+                                                First Name: {{form.first_name}}
+                                            </div>
+                                            <div class="form-group col-md-6 col-sm-12 col-lg-6">
+                                                Last Name: {{form.last_name}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-6 col-sm-12 col-lg-6">
+                                                Email Address: {{form.email}}
+                                            </div>
+                                            <div class="form-group col-md-6 col-sm-12 col-lg-6">
+                                                Phone Number: {{form.phone}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-12 col-sm-12 col-lg-12">
+                                                Address: {{form.address}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-6 col-sm-12 col-lg-6">
+                                                State: {{form.state}}
+                                            </div>
+                                            <div class="form-group col-md-6 col-sm-12 col-lg-6">
+                                                Country: {{form.country}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-6 col-sm-12 col-lg-6">
+                                                City: {{form.city}}
+                                            </div>
+                                            <div class="form-group col-md-6 col-sm-12 col-lg-6">
+                                                Pincode: {{form.pin_code}}
+                                            </div>
+                                        </div>
                                        
                                     </div>
                                     
@@ -63,8 +102,11 @@
                                                     <span id="total">{{grand_total}}</span>
                                                 </span>
                                             </li>
-                                            <a href="{% url 'checkout' %}" class="btn btn-danger w-100" style="font-size: 13px; padding: 6px;">PROCEED TO CHECKOUT</a>
+                                            <button type="submit" class="btn btn-danger w-100" style="font-size: 13px; padding: 6px;">PLACE ORDER</button>
                                         </ul>
+
+                                    </form>
+                                        <!-- Form Ends -->
                                     </div>
                                 </div>
                             </div>
