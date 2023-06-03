@@ -38,7 +38,7 @@ table > tbody > tr > td{
 
 /* checked style */
 .payment-method [type=radio]:checked + img {
-    outline: 2px solid black ;
+    outline: 2px solid red ;
 }
 
 /* .btn .btn-info{
