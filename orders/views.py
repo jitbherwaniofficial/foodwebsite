@@ -6,6 +6,8 @@ from orders.forms import OrderForm
 from orders.models import Order
 import simplejson as json
 
+from orders.utils import generate_order_number
+
 # Create your views here.
 
 def place_order(request):
@@ -37,7 +39,8 @@ def place_order(request):
             order.tax_data = json.dumps(tax_data)
             order.total_tax = total_tax
             order.payment_method = request.POST['payment_method']
-            order.order_number = '123'
+            order.save() # ORDER ID / PK IS GENERATED
+            order.order_number = generate_order_number(order.id)
             order.save()
             return  redirect('place_order')
         else:
