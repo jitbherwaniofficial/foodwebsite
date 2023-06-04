@@ -4,7 +4,7 @@ from marketplace.context_processors import get_cart_amounts
 
 from marketplace.models import Cart
 from orders.forms import OrderForm
-from orders.models import Order
+from orders.models import Order, Payment
 import simplejson as json
 
 from orders.utils import generate_order_number
@@ -54,4 +54,34 @@ def place_order(request):
 
 
 def payments(request):
+    # CHECK IF THE REQUEST IS AJAX OR NOT
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == 'POST':
+        # UPDATE THE PAYMENT DETAILS IN THE PAYMENT MODEL
+        order_number = request.POST.get('order_number')
+        transaction_id = request.POST.get('transaction_id')
+        payment_method =  request.POST.get('payment_method')   
+        status =  request.POST.get('status')  
+        order = Order.objects.get(user=request.user, order_number=order_number) 
+        payment = Payment(
+            user = request.user,
+            transaction_id = transaction_id,
+            payment_method = payment_method,
+            amount = order.total,
+            status = status,
+        )
+        payment.save()
+        # UPDATE THE ORDER MODEL
+        order.payment = payment
+        order.is_ordered = True
+        order.save()
+        
+        # MOVE THE CART ITEMS TO ORDERED FOOD MODEL
+
+        # SEND ORDER CONFIRMATION EMAIL TO THE CUSTOMER 
+
+        # SEND ORDER CONFIRMATION EMAIL TO THE VENDOR 
+
+        # CLEAR THE CARRT IF THE PAYMENT IS SUCCESS
+
+        # RETURN BACK TO AJAX WITH THE STATUS SUCCESS OR THE FAILURE 
     return HttpResponse('Payment View')    
