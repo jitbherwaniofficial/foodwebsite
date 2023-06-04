@@ -80,7 +80,31 @@
 <!-- Main Section End -->
 
 <script>
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                }
+            }                    
+        }
+        return cookieValue;
+    }
+        
+                  
+
     var grand_total = "{{ grand_total }}"
+    var url = '{% url "payments" %}'
+    var order_number = '{{order.order_number}}'
+    var csrftoken = getCookie('csrftoken');  
+
+    console.log("CSRF =>",csrftoken);
      // Render the PayPal button into #paypal-button-container
      paypal.Buttons({
 
@@ -101,10 +125,10 @@ onApprove: function(data, actions) {
         // Successful capture! For demo purposes:
         console.log(orderData)
         var transaction = orderData.purchase_units[0].payments.captures[0];
-        console.log(transaction.id);
-        // var transaction_id = transaction.id
-        // var status = orderData.status
-        // var payment_method = 'PayPal'
+        var transaction_id = transaction.id
+        var status = orderData.status
+        var payment_method = 'PayPal'
+        sendTransaction(transaction_id, payment_method, status);
 
         // Replace the above to show a success message within this page, e.g.
         // const element = document.getElementById('paypal-button-container');
@@ -116,6 +140,24 @@ onApprove: function(data, actions) {
 
 
 }).render('#paypal-button-container');
+
+// send data to payments view to store in the database
+function sendTransaction(transaction_id, payment_method, status){
+    $.ajax({
+        type: 'POST',
+        url:url,
+        data: {
+           'order_number': order_number,
+           'transaction_id':transaction_id,
+           'payment_method':payment_method,
+           'status':status,
+           'csrfmiddlewaretoken':csrftoken
+        },
+        success: function (response) {
+            console.log('Response =>',response);
+        }
+    })
+}
 
 </script>
 
