@@ -6,10 +6,21 @@
 <div class="container mt-5 mb-5">
     <div class="justify-content-center row">
         <div class="col-md-8">
-            <div class="bg-white p-3 text-center">
+            <div class="bg-white p-3">
                 <img src="{% static 'logo/foodOnlineLogo.png' %}" alt="FoodOnline Logo" width="300">
-                <h4 class="mt-2 mb-3 text-danger">Thank you for your order.</h4>
-                <h6>Hello {{order.name}}, </h6><span>Thank you for your order. Review your order details below.</span>
+                <div class="row">
+                    <div class="col-md-6 text-left">
+                        <h4 class="mt-2 mb-3c text-danger">Thank you for your order.</h4>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <p class="mb-0">{{order.name}}</p>
+                        <p class="mb-0">{{order.address}}</p>
+                        <p class="mb-0">{{order.phone}}</p>
+                        <p class="mb-0">{{order.email}}</p>
+                    </div>
+                </div>
+
+                <h6 class="text-left">Hello {{order.name}}, </h6><p class="text-left">Thank you for your order. Review your order details below.</p>
                 <hr>
 
                 <div class="d-flex justify-content-between">
