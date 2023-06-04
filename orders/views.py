@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from accounts.utils import send_notification
 from marketplace.context_processors import get_cart_amounts
@@ -100,8 +100,28 @@ def payments(request):
         }
         send_notification(email_subject, email_template, context)
         # SEND ORDER CONFIRMATION EMAIL TO THE VENDOR 
-
-        # CLEAR THE CARRT IF THE PAYMENT IS SUCCESS
-
+        email_subject = 'You have received a new order'
+        email_template = 'orders/new_order_received.html'
+        to_emails = []
+        for i in cart_items :
+            if i.fooditem.vendor.user.email not in to_emails:
+                to_emails.append(i.fooditem.vendor.user.email)
+        context = {
+            'order': order,
+            'to_email': to_emails,
+        }
+        send_notification(email_subject, email_template, context)
+        # CLEAR THE CART IF THE PAYMENT IS SUCCESS
+        # cart_items.delete()
         # RETURN BACK TO AJAX WITH THE STATUS SUCCESS OR THE FAILURE 
+        response = {
+            'order_number': order_number,
+            'transaction_id': transaction_id
+        }
+        return JsonResponse(response)
     return HttpResponse('Payment View')    
+
+
+
+def order_complete(request):
+    return render(request, 'orders/order_complete.html')

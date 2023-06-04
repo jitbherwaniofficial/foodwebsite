@@ -130,6 +130,7 @@
     var url = '{% url "payments" %}'
     var order_number = '{{order.order_number}}'
     var csrftoken = getCookie('csrftoken');  
+    var order_Complete = "{% url 'order_complete' %}"
 
     console.log("CSRF =>",csrftoken);
      // Render the PayPal button into #paypal-button-container
@@ -182,6 +183,7 @@ function sendTransaction(transaction_id, payment_method, status){
         },
         success: function (response) {
             console.log('Response =>',response);
+            window.location.href = order_Complete + '?order_no=' + response.order_number + '&trans_id=' + response.transaction_id
         }
     })
 }
