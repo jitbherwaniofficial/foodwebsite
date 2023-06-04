@@ -49,6 +49,7 @@ class Vendor(models.Model):
                     context = {
                         "user": self.user,
                         "is_approved": self.is_approved,
+                        'to_email': self.user.email
                     }
                     send_notification(email_subject, email_template, context)
                 else:

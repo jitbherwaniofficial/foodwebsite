@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from accounts.utils import send_notification
 from marketplace.context_processors import get_cart_amounts
 
 from marketplace.models import Cart
@@ -8,9 +9,11 @@ from orders.models import Order, OrderedFood, Payment
 import simplejson as json
 
 from orders.utils import generate_order_number
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+@login_required(login_url='login')
 def place_order(request):
     cart_items = Cart.objects.filter(user=request.user).order_by('created_at')
     cart_count = cart_items.count()
@@ -53,6 +56,7 @@ def place_order(request):
     return render(request, 'orders/place_order.html')
 
 
+@login_required(login_url='login')
 def payments(request):
     # CHECK IF THE REQUEST IS AJAX OR NOT
     if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == 'POST':
@@ -87,7 +91,14 @@ def payments(request):
             ordered_food.amount = (item.fooditem.price * item.quantity)
             ordered_food.save()    
         # SEND ORDER CONFIRMATION EMAIL TO THE CUSTOMER 
-
+        email_subject = 'Thank you for ordering with us'
+        email_template = 'orders/order_confirmation_email.html'
+        context = {
+            'user': request.user,
+            'order': order,
+            'to_email': order.email,
+        }
+        send_notification(email_subject, email_template, context)
         # SEND ORDER CONFIRMATION EMAIL TO THE VENDOR 
 
         # CLEAR THE CARRT IF THE PAYMENT IS SUCCESS
