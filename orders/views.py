@@ -4,7 +4,7 @@ from marketplace.context_processors import get_cart_amounts
 
 from marketplace.models import Cart
 from orders.forms import OrderForm
-from orders.models import Order, Payment
+from orders.models import Order, OrderedFood, Payment
 import simplejson as json
 
 from orders.utils import generate_order_number
@@ -74,9 +74,18 @@ def payments(request):
         order.payment = payment
         order.is_ordered = True
         order.save()
-        
         # MOVE THE CART ITEMS TO ORDERED FOOD MODEL
-
+        cart_items = Cart.objects.filter(user=request.user)
+        for item in cart_items:
+            ordered_food = OrderedFood()
+            ordered_food.order = order
+            ordered_food.payment = payment
+            ordered_food.user = request.user
+            ordered_food.fooditem = item.fooditem
+            ordered_food.quantity = item.quantity
+            ordered_food.price = item.fooditem.price
+            ordered_food.amount = (item.fooditem.price * item.quantity)
+            ordered_food.save()    
         # SEND ORDER CONFIRMATION EMAIL TO THE CUSTOMER 
 
         # SEND ORDER CONFIRMATION EMAIL TO THE VENDOR 
