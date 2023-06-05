@@ -28,6 +28,15 @@
     <script src="https://www.paypal.com/sdk/js?client-id={{ PAYPAL_CLIENT_ID }}&currency=USD"></script>
 
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+
+    <!-- INCLUDE DATATABLES PLUGIN SCRIPT AND CSS -->
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myOrdersTable').DataTable();
+        });
+    </script>
     <style>
         body,
         .main-section p,
