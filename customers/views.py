@@ -4,6 +4,8 @@ from accounts.forms import UserInfoForm, UserProfileForm
 from accounts.models import UserProfile
 from django.contrib import messages
 
+from orders.models import Order
+
 # Create your views here.
 
 @login_required(login_url='login')
@@ -31,3 +33,11 @@ def cprofile(request):
     }
 
     return render(request, 'customer/cprofile.html', context)
+
+
+def my_orders(request):
+    orders = Order.objects.filter(user=request.user, is_ordered=True).order_by('-created_at')
+    context = {
+        'orders':orders,
+    }
+    return render(request, 'customer/my_orders.html',context)
