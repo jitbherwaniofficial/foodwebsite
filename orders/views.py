@@ -11,6 +11,8 @@ import simplejson as json
 
 from orders.utils import generate_order_number
 from django.contrib.auth.decorators import login_required
+from django.contrib.sites.shortcuts import get_current_site
+ 
 
 # Create your views here.
 
@@ -128,10 +130,14 @@ def payments(request):
         # SEND ORDER CONFIRMATION EMAIL TO THE CUSTOMER 
         email_subject = 'Thank you for ordering with us'
         email_template = 'orders/order_confirmation_email.html'
+
+        ordered_food = OrderedFood.objects.filter(order=order)
         context = {
             'user': request.user,
             'order': order,
             'to_email': order.email,
+            'ordered_food':ordered_food,
+            'domain': get_current_site(request)
         }
         send_notification(email_subject, email_template, context)
         # SEND ORDER CONFIRMATION EMAIL TO THE VENDOR 
