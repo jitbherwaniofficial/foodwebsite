@@ -47,6 +47,9 @@ table > tbody > tr > td{
     cursor: pointer;
 } */
 
+table td, table th{
+    line-height: 1.1rem !important;
+}
 
 @media only screen and (max-width:480px) {
     .main-header .login-option a.get-start-btn{
@@ -59,5 +62,22 @@ table > tbody > tr > td{
         padding-top: 100px !important;
         padding-bottom: 50px !important;
         background-position: left !important;
+    }
+
+    .user-dashboard.loader-holder{
+        width: 100% !important;
+    }
+
+    .menu-itam-holder .quantity {
+        right: 0 !important;
+        margin-top: -30px !important;
+    }
+
+    table.opening_hours {
+        width: 100% !important;
+    }
+
+    .table td{
+        padding: 0.5rem !important;
     }
 }
