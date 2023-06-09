@@ -46,3 +46,18 @@ table > tbody > tr > td{
     font-size: 12px;
     cursor: pointer;
 } */
+
+
+@media only screen and (max-width:480px) {
+    .main-header .login-option a.get-start-btn{
+        display: block;
+        margin-top: 15px !important;
+        margin-left: 0 !important;
+    }
+
+    .main-search-bar {
+        padding-top: 100px !important;
+        padding-bottom: 50px !important;
+        background-position: left !important;
+    }
+}
